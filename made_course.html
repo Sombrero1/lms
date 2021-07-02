@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Создать курс</title>
+  <link rel="stylesheet" href="https://unpkg.com/flexboxgrid2@7.2.1/flexboxgrid2.min.css">
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+   <div class="container">
+        <div class="row"><h1 class="main_title">Создать курс</h1></div>
+        <div class="row">
+            <div class="change_file">
+                <h4>Выберите обложку курса</h4>
+                <input class="file_input" type="file">
+                <button class="button">Обновить</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="search">
+                 <h4>Название</h4>
+                 <input type="text" required placeholder=""></input>
+                 <div class="attention">Название курса должно быть заполнено</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="search">
+                 <h4>Автор</h4>
+                 <input type="text" required placeholder=""></input>
+                 <div class="attention">Название курса должно быть заполнено</div>
+                 <button class="button">Сохранить</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <a class="lessons" href="#">Новый урок</a>
+            <table class="list">
+                <tr class="table_title">
+                    <th>Id</th>
+                    <th>Название</th>
+                    <th>Action</th>
+                </tr>
+                <tr class="table_body">
+                    <td>1</td>
+                    <td>Course name</td>
+                    <td>
+                        <button class="button">Удалить</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>No data</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <h4 class="lessons">Пользователи, связанные с курсом</h4>
+            <table class="list">
+                <tr class="table_title">
+                    <th>Id</th>
+                    <th>Название</th>
+                    <th>Action</th>
+                </tr>
+                <tr class="table_body">
+                    <td>1</td>
+                    <td>Username</td>
+                    <td>
+                        <button class="button">Снять с курса</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>No data</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
