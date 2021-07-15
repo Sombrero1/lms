@@ -6,10 +6,10 @@ import javax.validation.constraints.Size;
 public class Course {
     private Long id;
     @NotBlank(message = "Course author has to be filled")
-    @Size(max=25, message = "Max length 25 chars")
+    @Size(max=32, message = "Max length 32 chars")
     private String author;
     @NotBlank(message = "Course title has to be filled")
-    @Size(max=25, message = "Max length 25 chars")
+    @Size(max=32, message = "Max length 32 chars")
     private String title;
 
     public Course() {

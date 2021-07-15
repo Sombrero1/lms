@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.controller.NoResultSearchException;
+
 import com.example.demo.controller.NotFoundException;
 import com.example.demo.dao.CourseRepository;
 import com.example.demo.domain.Course;
