@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--th:replace="fragments/header :: header"-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Courses</title>
+  <link rel="stylesheet" href="https://unpkg.com/flexboxgrid2@7.2.1/flexboxgrid2.min.css">
+  
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" media="screen and (max-width:576px) and (min-width:320px)" href="../style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="row">
+               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                    <div class="home">
+                        <form action="/course">
+                        <button><img  src="../pictures/Vector.png"></button></form>
+                    </div> 
+               </div>
+               <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">     
+                    <div class="courses">
+                        <form action="courses.html">
+                        <button><img src="../pictures/icons8-курсы-96 2.png"></button></form>
+                    </div>
+               </div>
+               <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="profile">
+                        <form action="profile.html">
+                        <button class="button fiolet">Профиль</button></form>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="section"> <!---вообще должно бы быть без section но когда убираешь все ломается-->
+        <div class="search">
+            <div class="container">
+                <h2 class="title">Каталог курсов</h2>
+                <form class="row">
+                   <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" >
+                       <div class="search_form">
+                            <input type="text" name="titlePrefix" th:value="${param.titlePrefix}">
+                        </div>
+                   </div>
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                          <button class="button fiolet">Искать</button>
+                      </div>
+                 </form>
+            </div>
+        </div>
+    </section>
+    <div class="main">
+        <div class="container">
+            <div class="main_body">
+                <div class="row" style="width: 100%;">
+
+
+                    <div class="col-lg-4 col-md-6 col-xs-12" th:each="course:${courses}">
+                        <div class="card">
+                            <img src="../pictures/web-development.jpg">
+                            <h3 class="course_title" th:text="${course.getTitle()}">Название курса</h3>
+                            <h4 class="course_author" th:text="${course.getAuthor()}">Автор курса</h4>
+                            <a th:href="@{/course/{id}(id=${course.id})}" ><button class="button blue">Выбрать</button></a>
+                            <form th:method="delete" th:action="@{/course/{id}(id = ${course.id})}">
+                                <button type="submit" class="button fiolet">Удалить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <a th:href="@{course/new}"><button class="button fiolet plus"></button></a>
+                </div>
+            </div>
+            <div class="row" th:if="${#lists.size(courses) == 0}">
+                <div class="col-lg-5 col-md-5 col-sm-5">
+                    <div class="error">
+                        <label>Не найдено курсов</label>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-7">
+                    <div class="search_error">
+                        <img src="pictures/error1.jpg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="faq">Помощь</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="faq">Контакты</div>
+                </div>
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                    <p class="footer_label">Знания-сила!</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="faq">Оставить отзыв</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
