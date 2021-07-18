@@ -53,10 +53,6 @@ class DemoApplicationTests {
 	public void testAnyTitle() {
 		titleCaseValidator.type = TitleCase.type.ANY;
 		Assert.isTrue(titleCaseValidator.isValid("I'm Right",null),"error validator");
-		Assert.isTrue(titleCaseValidator.isValid("I'm now right",null),"error validator");
-		Assert.isTrue(titleCaseValidator.isValid("Я правильный заголовок",null)
-				,"error validator"); //особенности при ANY Для русских и английских заголовков не учитываются
-		Assert.isTrue(titleCaseValidator.isValid("Я правильный заголОвок почти",null),"error validator");
 
 		Assert.isTrue(!titleCaseValidator.isValid("Я правильный заголовок or not",null),"error validator");
 		Assert.isTrue(!titleCaseValidator.isValid("Я правил;ьный заголовок",null),"error validator");

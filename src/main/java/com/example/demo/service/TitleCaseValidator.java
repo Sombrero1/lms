@@ -30,17 +30,32 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
         }
         return false;
     }
-    private static boolean isEngTitle(String s){
-        String[]words = s.split(" ");
-        for (int i = 0; i < words.length; i++) {
-            if (i != 0 && i != words.length - 1){
-                if(!Arrays.asList(conjs).contains(words[i]) && !Character.isUpperCase(words[i].charAt(0))) return true;
-            }
-            else{
-                if(!Character.isUpperCase(words[i].charAt(0))) return true;
-            }
+
+    private static boolean isRusTitle(String s){
+        if (!s.contains("\r\t\n") && !isContainsSpace(s) && s.strip().equals(s)){
+            if (Character.isUpperCase(s.charAt(0)) && s.substring(1).equals(s.substring(1).toLowerCase())
+                    && isMatchingRegexp(s, rus)) return true;
         }
         return false;
+    }
+
+    private static boolean isEngTitle(String s){
+        if (!s.contains("\r\t\n") && !isContainsSpace(s) && s.strip().equals(s)){
+            String[]words = s.split(" ");
+            for (int i = 0; i < words.length; i++) {
+                if (i != 0 && i != words.length - 1){
+                    if(!Arrays.asList(conjs).contains(words[i]) && !Character.isUpperCase(words[i].charAt(0))) return false;
+                }
+                else{
+                    if(!Character.isUpperCase(words[i].charAt(0))) return false;
+                }
+            }
+        }
+        else{
+            return false;
+        }
+
+        return true; //если не сработало обратное
     }
 
 
@@ -65,22 +80,18 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        //проверка общая
-        if(!s.contains("\r\t\n") && !isContainsSpace(s) && s.strip().equals(s)){
-            switch (type){
-                case RU:
-                    if (Character.isUpperCase(s.charAt(0)) && s.substring(1).equals(s.substring(1).toLowerCase())
-                            && isMatchingRegexp(s, rus)) return true;
-
-                    break;
-                case EN:
-                    if (!isEngTitle(s) &&
-                            isMatchingRegexp(s, eng)) return true;
-                    break;
-                case ANY:
-                    if ((isMatchingRegexp(s, rus) || isMatchingRegexp(s, eng))) return true;
+        switch (type){
+            case RU:
+                if (isRusTitle(s)) return true;
+                break;
+            case EN:
+                if (isEngTitle(s)) return true;
+                break;
+            case ANY:
+                if ((isEngTitle(s) || isRusTitle(s))) return true;
+                break;
             }
-        }
+
         return false;
     }
 }

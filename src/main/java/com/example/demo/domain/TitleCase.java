@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Constraint(validatedBy = TitleCaseValidator.class)
 public @interface TitleCase {
-    String message() default "{javax.validation.constraints.NotNull.message}";
+    String message() default "Не соотвествует правилам задания заголовков";
 
     enum type {
         RU,
