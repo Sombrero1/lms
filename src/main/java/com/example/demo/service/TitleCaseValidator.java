@@ -40,7 +40,7 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
     }
 
     private static boolean isEngTitle(String s){
-        if (!s.contains("\r\t\n") && !isContainsSpace(s) && s.strip().equals(s)){
+        if (!s.contains("\r\t\n") && !isContainsSpace(s) && s.strip().equals(s) && isMatchingRegexp(s, eng)){
             String[]words = s.split(" ");
             for (int i = 0; i < words.length; i++) {
                 if (i != 0 && i != words.length - 1){
@@ -88,7 +88,7 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
                 if (isEngTitle(s)) return true;
                 break;
             case ANY:
-                if ((isEngTitle(s) || isRusTitle(s))) return true;
+                if ((isEngTitle(s) ^ isRusTitle(s))) return true;
                 break;
             }
 
