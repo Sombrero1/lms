@@ -26,17 +26,9 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
         type = constraintAnnotation.typeOfTitle();
     }
 
-    private static boolean isContainsSpace(String s){
-        String[]words = s.split(" ");
-        for (String word:words
-                 ) {
-                if(word.length() == 0) return true;
-        }
-        return false;
-    }
 
     private static boolean isRusTitle(String s){
-        if (!s.contains("\r\t\n") && !isContainsSpace(s) && s.strip().equals(s)){
+        if (!s.contains("  ") && s.strip().equals(s)){
             if (Character.isUpperCase(s.charAt(0)) && s.substring(1).equals(s.substring(1).toLowerCase())
                     && isMatchingRegexp(s, rus)) return true;
         }
@@ -44,7 +36,7 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
     }
 
     private static boolean isEngTitle(String s){
-        if (!isContainsSpace(s) && s.strip().equals(s) && isMatchingRegexp(s, eng)){
+        if (!s.contains("  ") && s.strip().equals(s) && isMatchingRegexp(s, eng)){
             String[]words = s.split(" ");
             for (int i = 0; i < words.length; i++) {
                 if (i != 0 && i != words.length - 1){
@@ -58,8 +50,7 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
         else{
             return false;
         }
-
-        return true; //если не сработало обратное
+        return true;
     }
 
 
@@ -86,16 +77,11 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
         switch (type){
             case RU:
-                if (isRusTitle(s)) return true;
-                break;
+                return (isRusTitle(s));
             case EN:
-                if (isEngTitle(s)) return true;
-                break;
-            case ANY:
-                if ((isEngTitle(s) ^ isRusTitle(s))) return true;
-                break;
+                return isEngTitle(s);
+            default:
+                return ((isEngTitle(s) ^ isRusTitle(s)));
             }
-
-        return false;
     }
 }
