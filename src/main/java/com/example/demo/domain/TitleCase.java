@@ -16,13 +16,13 @@ import java.lang.annotation.Target;
 public @interface TitleCase {
     String message() default "Не соотвествует правилам задания заголовков";
 
-    enum type {
+    enum Type {
         RU,
         EN,
         ANY
     }
 
-    type typeOfTitle() default type.ANY;
+    Type typeOfTitle() default Type.ANY;
 
     Class<?>[] groups() default {};
 

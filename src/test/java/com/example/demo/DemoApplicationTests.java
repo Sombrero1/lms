@@ -9,16 +9,11 @@ import org.springframework.util.Assert;
 
 @SpringBootTest
 class DemoApplicationTests {
-	static TitleCaseValidator titleCaseValidator;
-	@BeforeAll
-	public static void contextLoads() {
-		titleCaseValidator = new TitleCaseValidator();
-	}
 
 	@Test
 	public void testRusTitle() {
 
-		titleCaseValidator.type = TitleCase.type.RU;
+		TitleCaseValidator titleCaseValidator = new TitleCaseValidator(TitleCase.Type.RU);
 		Assert.isTrue(titleCaseValidator.isValid("Я правильный заголовок",null),"error validator");
 		Assert.isTrue(titleCaseValidator.isValid("Я правильный, заголовок,",null),"error validator");
 
@@ -34,7 +29,7 @@ class DemoApplicationTests {
 
 	@Test
 	public void testEngTitle() {
-		titleCaseValidator.type = TitleCase.type.EN;
+		TitleCaseValidator titleCaseValidator = new TitleCaseValidator(TitleCase.Type.EN);
 		Assert.isTrue(titleCaseValidator.isValid("I'm Right",null),"error validator");
 		Assert.isTrue(titleCaseValidator.isValid("I'm Now Right",null),"error validator");
 		Assert.isTrue(titleCaseValidator.isValid("I'm and Right",null),"error validator");
@@ -51,7 +46,7 @@ class DemoApplicationTests {
 
 	@Test
 	public void testAnyTitle() {
-		titleCaseValidator.type = TitleCase.type.ANY;
+		TitleCaseValidator titleCaseValidator = new TitleCaseValidator(TitleCase.Type.ANY);
 		Assert.isTrue(titleCaseValidator.isValid("I'm Right",null),"error validator");
 
 		Assert.isTrue(!titleCaseValidator.isValid("Я правильный заголовок or not",null),"error validator");

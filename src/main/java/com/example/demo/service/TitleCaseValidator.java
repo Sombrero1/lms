@@ -12,10 +12,14 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class TitleCaseValidator implements ConstraintValidator<TitleCase, String> {
-    public TitleCase.type type;
-    private static String eng = "([A-Za-z',\"' ]+)";
-    private static String rus = "([А-Яа-я',\"' ]+)";
-    private static String []conjs = new String[]{"a", "but","for", "or", "not", "the", "an", "and"};
+    private static TitleCase.Type type;
+    private static final String eng = "([A-Za-z',\"' ]+)";
+    private static final String rus = "([А-Яа-я',\"' ]+)";
+    private static final String []conjs = new String[]{"a", "but","for", "or", "not", "the", "an", "and"};
+
+    public TitleCaseValidator(TitleCase.Type type) {
+        this.type = type;
+    }
 
     @Override
     public void initialize(TitleCase constraintAnnotation) {
@@ -25,8 +29,8 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
     private static boolean isContainsSpace(String s){
         String[]words = s.split(" ");
         for (String word:words
-             ) {
-            if(word.length() == 0) return true;
+                 ) {
+                if(word.length() == 0) return true;
         }
         return false;
     }
@@ -40,7 +44,7 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
     }
 
     private static boolean isEngTitle(String s){
-        if (!s.contains("\r\t\n") && !isContainsSpace(s) && s.strip().equals(s) && isMatchingRegexp(s, eng)){
+        if (!isContainsSpace(s) && s.strip().equals(s) && isMatchingRegexp(s, eng)){
             String[]words = s.split(" ");
             for (int i = 0; i < words.length; i++) {
                 if (i != 0 && i != words.length - 1){
