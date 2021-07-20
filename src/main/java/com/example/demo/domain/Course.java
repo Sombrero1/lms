@@ -8,6 +8,7 @@ public class Course {
     @NotBlank(message = "Course author has to be filled")
     @Size(max=32, message = "Max length 32 chars")
     private String author;
+    @TitleCase
     @NotBlank(message = "Course title has to be filled")
     @Size(max=32, message = "Max length 32 chars")
     private String title;
