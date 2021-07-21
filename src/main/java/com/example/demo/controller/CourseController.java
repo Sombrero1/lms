@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dao.CourseRepository;
 import com.example.demo.domain.Course;
+import com.example.demo.domain.Lesson;
 import com.example.demo.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/course")
@@ -31,6 +33,8 @@ public class CourseController {
     @GetMapping("/{id}")
     public String courseForm(Model model, @PathVariable("id") Long id) {
         model.addAttribute("course", courseService.findById(id));
+        Lesson[] lessons = new Lesson[]{new Lesson("h","fdasfsdfd")};
+        model.addAttribute("lessons",lessons );
         return "course_form";
     }
 

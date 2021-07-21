@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -60,32 +60,25 @@
                 </div>
                 <div class="table_block">
                     <div class="label">Содержание</div>
-                        <div class="row">
+                        <div class="row" th:unless="${lessons == null}">
                             <table class="table">
                                 <tr class="table_title">
                                     <th>Id</th>
                                     <th>Название</th>
                                     <th>Action</th>
                                 </tr>
-                                <tr class="table_body">
-                                    <td>1</td>
-                                    <td>Верстка</td>
+                                <tr class="table_body" th:each="lesson:${lessons}">
+                                    <td th:value="lesson.id"></td>
+                                    <td th:value="lesson.title">Верстка</td>
                                     <td>
                                         <button class="button fiolet">Открыть</button>
                                     </td>
-                                </tr>
-                                <tr class="table_body">
-                                    <td>2</td>
-                                    <td>Веб-разработка</td>
-                                    <td>
-                                        <button class="button fiolet">Открыть</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>No data</td>
                                 </tr>
                             </table>
                         </div>
+                    <tr th:if="${lessons == null}">
+                        <td>No data</td>
+                    </tr>
                 </div>
                 <div class="row">
                     <div style="width: 100%;">

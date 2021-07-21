@@ -1,20 +1,46 @@
 package com.example.demo.domain;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import java.util.List;
+import java.util.Set;
+
+
+@Data
+@NoArgsConstructor
+
+@Entity
+@Table(name = "courses")
 public class Course {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank(message = "Course author has to be filled")
     @Size(max=32, message = "Max length 32 chars")
+    @Column
     private String author;
-    @TitleCase
+
+
+    @Column
     @NotBlank(message = "Course title has to be filled")
     @Size(max=32, message = "Max length 32 chars")
+    @TitleCase()
     private String title;
 
-    public Course() {
-    }
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Lesson> lessons;
+
+    @ManyToMany
+    private Set<User> users;
+
+
+
 
     public Course(Long id, String author, String title) {
         this.id = id;
@@ -22,27 +48,5 @@ public class Course {
         this.title = title;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }

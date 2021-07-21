@@ -4,7 +4,6 @@ package com.example.demo.service;
 import com.example.demo.controller.NotFoundException;
 import com.example.demo.dao.CourseRepository;
 import com.example.demo.domain.Course;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -28,7 +27,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> findByTitleWithPrefix(String titlePrefix) {
-        return courseRepository.findByTitleWithPrefix(titlePrefix == null ? "" : titlePrefix);
+        if(titlePrefix == null) titlePrefix = "";
+        return courseRepository.findByTitleLike(titlePrefix + "%");
     }
 
     @Override
@@ -36,8 +36,9 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
+
     @Override
     public void delete(Long id) {
-        courseRepository.delete(id);
+        courseRepository.deleteById(id);
     }
 }

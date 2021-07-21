@@ -59,7 +59,7 @@
                 <div class="row" style="width: 100%;">
 
 
-                    <div class="col-lg-4 col-md-6 col-xs-12" th:each="course:${courses}">
+                    <div class="col-lg-4 col-md-6 col-xs-12" th:unless="${courses.empty}" th:each="course:${courses}">
                         <div class="card">
                             <img src="../pictures/web-development.jpg">
                             <h3 class="course_title" th:text="${course.getTitle()}">Название курса</h3>
@@ -75,7 +75,7 @@
                     <a th:href="@{course/new}"><button class="button fiolet plus"></button></a>
                 </div>
             </div>
-            <div class="row" th:if="${#lists.size(courses) == 0}">
+            <div class="row" th:if="${courses.empty}">
                 <div class="col-lg-5 col-md-5 col-sm-5">
                     <div class="error">
                         <label>Не найдено курсов</label>
