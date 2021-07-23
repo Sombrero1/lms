@@ -1,8 +1,7 @@
 package com.example.demo.domain;
 
 
-import com.example.demo.service.TitleCaseValidator;
-
+import com.example.demo.service.validators.TitleCaseValidator;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;

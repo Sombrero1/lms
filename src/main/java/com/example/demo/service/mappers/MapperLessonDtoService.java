@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.mappers;
 import org.modelmapper.ModelMapper;
 import com.example.demo.domain.Lesson;
 import com.example.demo.dto.LessonDto;

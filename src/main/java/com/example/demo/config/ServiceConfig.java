@@ -20,7 +20,7 @@ public class ServiceConfig {
     }
 
     @Bean
-    public UserService userService(UserRepository userRepository){
-        return new UserServiceImpl(userRepository);
+    public UserService userService(UserRepository userRepository, CourseRepository courseRepository){
+        return new UserServiceImpl(userRepository, courseRepository);
     }
 }

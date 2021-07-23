@@ -1,10 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.Course;
 import com.example.demo.domain.Lesson;
 import com.example.demo.dto.LessonDto;
 import com.example.demo.service.LessonService;
-import com.example.demo.service.MapperLessonDtoService;
+import com.example.demo.service.mappers.MapperLessonDtoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

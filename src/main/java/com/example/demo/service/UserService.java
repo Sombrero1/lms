@@ -10,6 +10,10 @@ public interface UserService {
 
     User findById(Long id) throws NoSuchElementException;
 
-
     List<User> getUsers();
+
+    void signUser(Long courseId, Long userId) throws NoSuchElementException;
+
+    void unsignUser(Long courseId, Long userId) throws NoSuchElementException;
+
 }

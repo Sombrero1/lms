@@ -3,6 +3,7 @@ package com.example.demo.service;
 
 import com.example.demo.dao.CourseRepository;
 import com.example.demo.domain.Course;
+import com.example.demo.dto.CourseDto;
 
 import java.util.List;
 import java.util.NoSuchElementException;

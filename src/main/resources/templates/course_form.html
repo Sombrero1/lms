@@ -15,7 +15,7 @@
         <div class="container">
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <form th:object="${course}" th:method="post" th:action="@{/course}">
+                <form th:object="${courseDto}" th:method="post" th:action="@{/course}">
                     <div class="row">
                         <div class="title_form">
                             <label>Информация о курсе</label>
@@ -80,14 +80,14 @@
                             </table>
                         </div>
                         <tr th:if="${lessons.empty}">
-                            <td>No data</td>
+                            <td>Уроки отсуствуют. Создайте первый урок!</td>
                         </tr>
                     </div>
 
                     <div class="row" >
                         <div class="button_save">
                             <form th:method="get" th:action="@{/lesson/new}">
-                                <input type="hidden" name="course_id" th:value="${course.id}"/>
+                                <input type="hidden" name="course_id" th:value="${courseDto.id}"/>
                                 <button type="submit" class="button fiolet">Добавить</button>
                             </form>
                         </div>
@@ -108,7 +108,7 @@
                                     <td th:text="${user.id}"></td>
                                     <td th:text="${user.username}"></td>
                                     <td>
-                                        <form th:method="post" th:action="@{/course/{id}/unassign(id = ${course.id})}">
+                                        <form th:method="post" th:action="@{/course/{id}/unassign(id = ${courseDto.id})}">
                                             <input type="hidden" th:name="userId" th:value="${user.id}">
                                             <button type="submit" class="button fiolet">Снять с курса</button>
                                         </form>
@@ -117,12 +117,12 @@
                             </table>
                         </div>
                         <tr th:if="${users.empty}">
-                            <td>No data</td>
+                            <td>Сейчас нет подписанный пользователей. Назначьте курс какому-нибудь частнику!</td>
                         </tr>
                     </div>
                     <div class="row">
                         <div class="button_save">
-                            <form th:method="get" th:action="@{/course/{id}/assign(id=${course.id})}">
+                            <form th:method="get" th:action="@{/course/{id}/assign(id=${courseDto.id})}">
                                 <button class="button fiolet">Добавить</button>
                             </form>
                         </div>

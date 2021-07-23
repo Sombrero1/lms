@@ -1,7 +1,9 @@
 package com.example.demo.domain;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
@@ -12,9 +14,9 @@ import java.util.List;
 import java.util.Set;
 
 
-@Data
 @NoArgsConstructor
-
+@Getter
+@Setter
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -22,16 +24,11 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Course author has to be filled")
-    @Size(max=32, message = "Max length 32 chars")
     @Column
     private String author;
 
 
     @Column
-    @NotBlank(message = "Course title has to be filled")
-    @Size(max=32, message = "Max length 32 chars")
-    @TitleCase()
     private String title;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)

@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class LessonDto {
     private Long id;
     @NotBlank(message = "не заполнено")

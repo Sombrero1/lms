@@ -1,9 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Course;
-import com.example.demo.domain.User;
+import com.example.demo.dto.CourseDto;
 import com.example.demo.service.CourseService;
-import com.example.demo.service.MapperLessonDtoService;
+import com.example.demo.service.mappers.MapperCourseDtoService;
+import com.example.demo.service.mappers.MapperLessonDtoService;
 import com.example.demo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -24,17 +25,25 @@ public class CourseController {
     private final CourseService courseService;
     private final MapperLessonDtoService mapperLessonDtoService;
     private final UserService userService;
+    private final MapperCourseDtoService mapperCourseDtoService;
 
-    public CourseController(CourseService courseService, MapperLessonDtoService mapperLessonDtoService, UserService userService) {
+    public CourseController(CourseService courseService, MapperLessonDtoService mapperLessonDtoService, UserService userService, MapperCourseDtoService mapperCourseDtoService) {
         this.courseService = courseService;
         this.mapperLessonDtoService = mapperLessonDtoService;
         this.userService = userService;
+        this.mapperCourseDtoService = mapperCourseDtoService;
     }
 
 
     @GetMapping()
     public String courseTable(Model model, @RequestParam(value = "titlePrefix", required = false) String titlePrefix) {
-        model.addAttribute("courses", courseService.findByTitleWithPrefix(titlePrefix));
+        model.addAttribute("courses",
+                courseService.
+                        findByTitleWithPrefix(titlePrefix).
+                        stream().
+                        map(l -> mapperCourseDtoService.convertToDTOCourse(l))
+                        .collect(Collectors.toList())
+        );
         return "courses";
     }
 
@@ -42,7 +51,7 @@ public class CourseController {
     @Transactional
     public String courseForm(Model model, @PathVariable("id") Long id) {
         Course course = courseService.findById(id);
-        model.addAttribute("course", course);
+        model.addAttribute("courseDto", mapperCourseDtoService.convertToDTOCourse(course));
         model.addAttribute("lessons", course.getLessons().stream()
                 .map(l -> mapperLessonDtoService.convertToDTOLesson(l))
                 .collect(Collectors.toList())
@@ -52,21 +61,33 @@ public class CourseController {
     }
 
     @PostMapping
-    public String applyCourseForm(@Valid Course course, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return "course_form";
-        courseService.save(course);
+    @Transactional
+    public String applyCourseForm(@Valid CourseDto courseDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            if(courseDto.getId()!=null){ //в случае неправильного редактирования существующего курса
+                                        // (т.к. не входит в один form)
+                Course course = mapperCourseDtoService.convertToEntityCourse(courseDto);
+                model.addAttribute("lessons", course.getLessons().stream()
+                        .map(l -> mapperLessonDtoService.convertToDTOLesson(l))
+                        .collect(Collectors.toList())
+                );
+                model.addAttribute("users", course.getUsers());
+            }
+            return "course_form";
+        }
+        courseService.save(mapperCourseDtoService.convertToEntityCourse(courseDto));
         return "redirect:/course";
     }
 
     @GetMapping("/new")
     public String courseForm(Model model) {
-        model.addAttribute("course", courseService.createTemplateCourse());
+        model.addAttribute("courseDto", mapperCourseDtoService.convertToDTOCourse(courseService.createTemplateCourse()));
         return "course_form";
     }
     @DeleteMapping("/{id}")
     public String deleteCourse(@PathVariable("id") Long id) {
         courseService.delete(id);
-        return "course_form";
+        return "redirect:/course";
     }
 
     @GetMapping("/{id}/assign")
@@ -77,24 +98,16 @@ public class CourseController {
     }
 
     @PostMapping("/{courseId}/unassign")
-    public String applyUnassignUserForm(@PathVariable("courseId") Long courseId,
+    public String applyUnsignUserForm(@PathVariable("courseId") Long courseId,
                                  @RequestParam("userId") Long id) {
-        User user = userService.findById(id);
-        Course course = courseService.findById(courseId);
-        course.getUsers().remove(user);
-        user.getCourses().remove(course);
-        courseService.save(course);
+        userService.unsignUser(courseId,id);
         return String.format("redirect:/course/%d",courseId);
     }
 
     @PostMapping("/{courseId}/assign")
     public String applyAssignUserForm(@PathVariable("courseId") Long courseId,
                                  @RequestParam("userId") Long id) {
-        User user = userService.findById(id);
-        Course course = courseService.findById(courseId);
-        course.getUsers().add(user);
-        user.getCourses().add(course);
-        courseService.save(course);
+        userService.signUser(courseId, id);
         return String.format("redirect:/course/%d",courseId);
     }
 
