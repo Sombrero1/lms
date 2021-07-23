@@ -37,6 +37,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public List<User>findUsersNotAssignedToCourse(Long courseId) {
+        return userRepository.findUsersNotAssignedToCourse(courseId);
+    }
+
+    @Override
     public void signUser(Long courseId, Long userId) throws NoSuchElementException {
         User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
         Course course = courseRepository.findById(courseId).orElseThrow(NoSuchElementException::new);

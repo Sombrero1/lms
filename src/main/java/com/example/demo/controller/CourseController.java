@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.domain.Course;
 import com.example.demo.dto.CourseDto;
 import com.example.demo.service.CourseService;
+import com.example.demo.service.LessonService;
 import com.example.demo.service.mappers.MapperCourseDtoService;
 import com.example.demo.service.mappers.MapperLessonDtoService;
 import com.example.demo.service.UserService;
@@ -26,12 +27,14 @@ public class CourseController {
     private final MapperLessonDtoService mapperLessonDtoService;
     private final UserService userService;
     private final MapperCourseDtoService mapperCourseDtoService;
+    private final LessonService lessonService;
 
-    public CourseController(CourseService courseService, MapperLessonDtoService mapperLessonDtoService, UserService userService, MapperCourseDtoService mapperCourseDtoService) {
+    public CourseController(CourseService courseService, MapperLessonDtoService mapperLessonDtoService, UserService userService, MapperCourseDtoService mapperCourseDtoService, LessonService lessonService) {
         this.courseService = courseService;
         this.mapperLessonDtoService = mapperLessonDtoService;
         this.userService = userService;
         this.mapperCourseDtoService = mapperCourseDtoService;
+        this.lessonService = lessonService;
     }
 
 
@@ -52,10 +55,7 @@ public class CourseController {
     public String courseForm(Model model, @PathVariable("id") Long id) {
         Course course = courseService.findById(id);
         model.addAttribute("courseDto", mapperCourseDtoService.convertToDTOCourse(course));
-        model.addAttribute("lessons", course.getLessons().stream()
-                .map(l -> mapperLessonDtoService.convertToDTOLesson(l))
-                .collect(Collectors.toList())
-        );
+        model.addAttribute("lessons", lessonService.findAllForLessonIdWithoutText(course.getId()));
         model.addAttribute("users", course.getUsers());
         return "course_form";
     }
@@ -67,10 +67,7 @@ public class CourseController {
             if(courseDto.getId()!=null){ //в случае неправильного редактирования существующего курса
                                         // (т.к. не входит в один form)
                 Course course = mapperCourseDtoService.convertToEntityCourse(courseDto);
-                model.addAttribute("lessons", course.getLessons().stream()
-                        .map(l -> mapperLessonDtoService.convertToDTOLesson(l))
-                        .collect(Collectors.toList())
-                );
+                model.addAttribute("lessons", lessonService.findAllForLessonIdWithoutText(course.getId()));
                 model.addAttribute("users", course.getUsers());
             }
             return "course_form";
@@ -92,7 +89,7 @@ public class CourseController {
 
     @GetMapping("/{id}/assign")
     public String assignCourse(Model model, @PathVariable("id") Long courseId) {
-        model.addAttribute("users", userService.getUsers());
+        model.addAttribute("users", userService.findUsersNotAssignedToCourse(courseId));
         model.addAttribute("courseId",courseId);
         return "assign_course";
     }

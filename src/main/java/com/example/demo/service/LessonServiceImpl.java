@@ -6,6 +6,7 @@ import com.example.demo.domain.Course;
 import com.example.demo.domain.Lesson;
 import com.example.demo.dto.LessonDto;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class LessonServiceImpl implements  LessonService {
@@ -39,4 +40,11 @@ public class LessonServiceImpl implements  LessonService {
     public void delete(Long id) {
             lessonRepository.deleteById(id);
     }
+
+    @Override
+    public List<LessonDto> findAllForLessonIdWithoutText(Long courseId) {
+        return lessonRepository.findAllForLessonIdWithoutText(courseId);
+    }
+
+
 }

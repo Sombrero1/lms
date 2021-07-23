@@ -16,4 +16,6 @@ public interface LessonService {
     Lesson findById(Long id);
 
     void delete(Long id);
+
+    List<LessonDto> findAllForLessonIdWithoutText(Long courseId);
 }

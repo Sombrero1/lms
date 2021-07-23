@@ -9,15 +9,21 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class LessonDto {
     private Long id;
-    @NotBlank(message = "не заполнено")
+    @NotBlank(message = "Не заполнено название")
     private String title;
-    @NotBlank(message = "не заполнено")
+    @NotBlank(message = "Не заполнено содержание")
     private String text;
     @NotNull
     private Long courseId;
 
+    public LessonDto(Long id, String title, Long courseId) {
+        this.id = id;
+        this.title = title;
+        this.courseId = courseId;
+    }
 
     public LessonDto(long courseId) {
         this.courseId = courseId;

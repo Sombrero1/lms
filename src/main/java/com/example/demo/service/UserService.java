@@ -16,4 +16,6 @@ public interface UserService {
 
     void unsignUser(Long courseId, Long userId) throws NoSuchElementException;
 
+    List<User>  findUsersNotAssignedToCourse(Long courseId);
+
 }
