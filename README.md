@@ -1,5 +1,5 @@
 # БД:
-![схема](bd.jpg) \n
+![схема](db.jpg) \n
 Основные запросы:
 1. Авторизация: SELECT password FROM users WHERE id = ?
 2. Все курсы: SELECT * FROM courses ORDER BY rating DESC. Индекс на таблицу: CREATE INDEX idx_courses ON courses USING btree (title, rating, category);
