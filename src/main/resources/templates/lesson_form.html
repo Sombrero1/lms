@@ -28,6 +28,8 @@
                     <div class="name_lesson">
                         <div class="label_input">Название урока</div>
                         <input class="form_input" type="text" th:field="*{title}">
+                        <small class="validation-error" th:if="${#fields.hasErrors('title')}" th:errors="*{text}">Text shouldn't be
+                            empty</small>
                     </div>
                 </div>
                 <div class="row">
@@ -44,6 +46,8 @@
                     <div class="info_block">
                         <div class="label_input">Содержание</div>
                         <textarea class="form_input" th:field="*{text}"></textarea>
+                        <small class="validation-error" th:if="${#fields.hasErrors('text')}" th:errors="*{text}">Text shouldn't be
+                            empty</small>
                     </div>
                 </div>
                 <div class="row">

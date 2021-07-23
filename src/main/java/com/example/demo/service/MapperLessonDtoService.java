@@ -22,6 +22,7 @@ public class MapperLessonDtoService {
     }
     public LessonDto convertToDTOLesson(Lesson lesson) {
         LessonDto lessonDto = modelMapper.map(lesson, LessonDto.class);
+        lessonDto.setCourseId(lesson.getCourse().getId());
         return lessonDto;
     }
 

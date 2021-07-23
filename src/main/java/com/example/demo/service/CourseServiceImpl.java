@@ -1,11 +1,11 @@
 package com.example.demo.service;
 
 
-import com.example.demo.controller.NotFoundException;
 import com.example.demo.dao.CourseRepository;
 import com.example.demo.domain.Course;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 public class CourseServiceImpl implements CourseService {
@@ -33,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course findById(Long id) {
-        return courseRepository.findById(id).orElseThrow(NotFoundException::new);
+        return courseRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
 

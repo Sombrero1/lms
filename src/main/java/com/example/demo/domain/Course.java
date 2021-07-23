@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -40,13 +41,10 @@ public class Course {
     private Set<User> users;
 
 
-
-
     public Course(Long id, String author, String title) {
         this.id = id;
         this.author = author;
         this.title = title;
     }
-
 
 }
