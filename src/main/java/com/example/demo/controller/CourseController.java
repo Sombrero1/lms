@@ -50,13 +50,17 @@ public class CourseController {
         return "courses";
     }
 
+    private void fillModelAdditionalCourse(Model model, Course course){
+        model.addAttribute("lessons", lessonService.findAllForLessonIdWithoutText(course.getId()));
+        model.addAttribute("users", course.getUsers());
+    }
+
     @GetMapping("/{id}")
     @Transactional
     public String courseForm(Model model, @PathVariable("id") Long id) {
         Course course = courseService.findById(id);
         model.addAttribute("courseDto", mapperCourseDtoService.convertToDTOCourse(course));
-        model.addAttribute("lessons", lessonService.findAllForLessonIdWithoutText(course.getId()));
-        model.addAttribute("users", course.getUsers());
+        fillModelAdditionalCourse(model, course);
         return "course_form";
     }
 
@@ -64,11 +68,9 @@ public class CourseController {
     @Transactional
     public String applyCourseForm(@Valid CourseDto courseDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            if(courseDto.getId()!=null){ //в случае неправильного редактирования существующего курса
-                                        // (т.к. не входит в один form)
+            if(courseDto.getId()!=null){
                 Course course = mapperCourseDtoService.convertToEntityCourse(courseDto);
-                model.addAttribute("lessons", lessonService.findAllForLessonIdWithoutText(course.getId()));
-                model.addAttribute("users", course.getUsers());
+                fillModelAdditionalCourse(model, course);
             }
             return "course_form";
         }
