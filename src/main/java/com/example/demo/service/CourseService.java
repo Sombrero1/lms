@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Course;
+import com.example.demo.dto.CourseDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
@@ -14,7 +16,8 @@ public interface CourseService {
 
     List<Course> findByTitleWithPrefix(String titlePrefix);
 
-    Course findById(Long id);
+    Course findById(Long id) throws NoSuchElementException;
 
     void delete(Long id);
+
 }

@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
 
-import com.example.demo.controller.NotFoundException;
 import com.example.demo.dao.CourseRepository;
 import com.example.demo.domain.Course;
-import org.springframework.stereotype.Service;
+import com.example.demo.dto.CourseDto;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 public class CourseServiceImpl implements CourseService {
@@ -28,16 +28,18 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> findByTitleWithPrefix(String titlePrefix) {
-        return courseRepository.findByTitleWithPrefix(titlePrefix == null ? "" : titlePrefix);
+        if(titlePrefix == null) titlePrefix = "";
+        return courseRepository.findByTitleLike(titlePrefix + "%");
     }
 
     @Override
     public Course findById(Long id) {
-        return courseRepository.findById(id).orElseThrow(NotFoundException::new);
+        return courseRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
+
 
     @Override
     public void delete(Long id) {
-        courseRepository.delete(id);
+        courseRepository.deleteById(id);
     }
 }
