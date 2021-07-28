@@ -1,8 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.dao.CourseRepository;
-import com.example.demo.dao.MemoryBasedCourseRepository;
-import com.example.demo.service.StatisticsCounter;
+import com.example.demo.service.statistic.StatisticsCounter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

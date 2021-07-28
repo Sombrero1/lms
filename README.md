@@ -9,3 +9,4 @@
 6. Добавление курса пользователем к себе: INSERT INTO users_courses VALUES(?, ?)
 7. Создание топика: INSERT INTO topics VALUES(?,...,?)
 
+

@@ -13,118 +13,121 @@
 <body>
     <div class="page">
         <div class="container">
-            <form th:object="${course}" th:method="post" th:action="@{/course}">
+
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="row">
-                    <div class="title_form">
-                        <label>Информация о курсе</label>
-                    </div>
-                </div>
-                <input type="hidden" th:field="*{id}">
-                <div class="row">
-                    <div class="name_course">
-                        <div for="title" class="label_input">Название курса</div>
-                        <input class="form_input" type="text" th:field="*{title}">
-                        <small class="validation-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="name_user">
-                        <div class="label_input">Автор курса</div>
-                        <input class="form_input" type="text" th:field="*{author}">
-                        <small class="validation-error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="file">
-                        <div class="label_input">Обложка</div>
-                        <div class="file_upload form_input">
-                            <div>Файл не выбран</div>
-                            <button>Выбрать</button>
-                            <input type="file">
+                <form th:object="${courseDto}" th:method="post" th:action="@{/course}">
+                    <div class="row">
+                        <div class="title_form">
+                            <label>Информация о курсе</label>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="info_block">
-                        <div class="label_input">Информация</div>
-                        <textarea class="form_input"></textarea>
+                    <input type="hidden" th:field="*{id}">
+                    <div class="row">
+                        <div class="name_course">
+                            <div for="title" class="label_input">Название курса</div>
+                            <input class="form_input" type="text" th:field="*{title}">
+                            <small class="validation-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"/>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="button_save">
-                        <button type="submit" class="button fiolet">Сохранить</button>
+                    <div class="row">
+                        <div class="name_user">
+                            <div class="label_input">Автор курса</div>
+                            <input class="form_input" type="text" th:field="*{author}">
+                            <small class="validation-error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"/>
+                        </div>
                     </div>
-                </div>
-                <div class="table_block">
-                    <div class="label_input">Уроки</div>
-                        <div class="row">
+                    <div class="row">
+                        <div class="file">
+                            <div class="label_input">Обложка</div>
+                            <div class="file_upload form_input">
+                                <div>Файл не выбран</div>
+                                <button>Выбрать</button>
+                                <input type="file">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="info_block">
+                            <div class="label_input">Информация</div>
+                            <textarea class="form_input"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="button_save">
+                            <button type="submit" class="button fiolet">Сохранить</button>
+                        </div>
+                    </div>
+                </form>
+                <div th:unless="${lessons == null}">
+                    <div class="table_block">
+                        <div class="label_input">Уроки</div>
+                        <div class="row" th:unless="${lessons.empty}">
                             <table class="table">
                                 <tr class="table_title">
                                     <th>Id</th>
                                     <th>Название</th>
                                     <th>Action</th>
                                 </tr>
-                                <tr class="table_body">
-                                    <td>1</td>
-                                    <td>Верстка</td>
+                                <tr class="table_body" th:each="lesson:${lessons}">
+                                    <td th:text="${lesson.id}">id</td>
+                                    <td th:text="${lesson.title}">Верстка</td>
                                     <td>
-                                        <button class="button fiolet">Удалить</button>
+                                        <form th:method="delete" th:action="@{/lesson/{id}(id = ${lesson.id})}">
+                                            <button type="submit" class="button fiolet">Удалить</button>
+                                        </form>
                                     </td>
-                                </tr>
-                                <tr class="table_body">
-                                    <td>2</td>
-                                    <td>Веб-разработка</td>
-                                    <td>
-                                        <button class="button fiolet">Удалить</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>No data</td>
                                 </tr>
                             </table>
                         </div>
-                </div>
-                <div class="row">
-                    <div class="button_save">
-                        <button class="button fiolet">Добавить</button>
+                        <tr th:if="${lessons.empty}">
+                            <td>Уроки отсуствуют. Создайте первый урок!</td>
+                        </tr>
+                    </div>
+
+                    <div class="row" >
+                        <div class="button_save">
+                            <form th:method="get" th:action="@{/lesson/new}">
+                                <input type="hidden" name="course_id" th:value="${courseDto.id}"/>
+                                <button type="submit" class="button fiolet">Добавить</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <div class="table_block">
-                    <div class="label_input">Пользователи</div>
-                        <div class="row">
+
+                <div th:unless="${lessons == null}">
+                    <div class="table_block" th:unless="${users == null}">
+                        <div class="label_input">Пользователи</div>
+                        <div class="row" th:unless="${users.empty}">
                             <table class="table">
                                 <tr class="table_title">
                                     <th>Id</th>
                                     <th>Имя</th>
                                     <th>Action</th>
                                 </tr>
-                                <tr class="table_body">
-                                    <td>1</td>
-                                    <td>Бахтин Антон</td>
+                                <tr class="table_body" th:each="user:${users}">
+                                    <td th:text="${user.id}"></td>
+                                    <td th:text="${user.username}"></td>
                                     <td>
-                                        <button class="button fiolet">Снять с курса</button>
+                                        <form th:method="post" th:action="@{/course/{id}/unassign(id = ${courseDto.id})}">
+                                            <input type="hidden" th:name="userId" th:value="${user.id}">
+                                            <button type="submit" class="button fiolet">Снять с курса</button>
+                                        </form>
                                     </td>
-                                </tr>
-                                <tr class="table_body">
-                                    <td>2</td>
-                                    <td>Башилова Наталья</td>
-                                    <td>
-                                        <button class="button fiolet">Снять с курса</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>No data</td>
                                 </tr>
                             </table>
                         </div>
-                </div>
-                <div class="row">
-                    <div class="button_save">
-                        <button class="button fiolet">Добавить</button>
+                        <tr th:if="${users.empty}">
+                            <td>Сейчас нет подписанный пользователей. Назначьте курс какому-нибудь частнику!</td>
+                        </tr>
+                    </div>
+                    <div class="row">
+                        <div class="button_save">
+                            <form th:method="get" th:action="@{/course/{id}/assign(id=${courseDto.id})}">
+                                <button class="button fiolet">Добавить</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </form>
             </div>
         </div>
     </div>

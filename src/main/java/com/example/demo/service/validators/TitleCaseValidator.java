@@ -1,8 +1,11 @@
-package com.example.demo.service;
+package com.example.demo.service.validators;
 
 
 
 import com.example.demo.domain.TitleCase;
+import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -10,12 +13,14 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
+@NoArgsConstructor
 public class TitleCaseValidator implements ConstraintValidator<TitleCase, String> {
     private static TitleCase.Type type;
     private static final String eng = "([A-Za-z',\"' ]+)";
     private static final String rus = "([А-Яа-я',\"' ]+)";
     private static final String []conjs = new String[]{"a", "but","for", "or", "not", "the", "an", "and"};
+
+
 
     public TitleCaseValidator(TitleCase.Type type) {
         this.type = type;
@@ -28,7 +33,7 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
 
 
     private static boolean isRusTitle(String s){
-        if (!s.contains("  ") && s.strip().equals(s)){
+        if (s != "" && !s.contains("  ") && s.strip().equals(s)){
             if (Character.isUpperCase(s.charAt(0)) && s.substring(1).equals(s.substring(1).toLowerCase())
                     && isMatchingRegexp(s, rus)) return true;
         }
@@ -36,7 +41,7 @@ public class TitleCaseValidator implements ConstraintValidator<TitleCase, String
     }
 
     private static boolean isEngTitle(String s){
-        if (!s.contains("  ") && s.strip().equals(s) && isMatchingRegexp(s, eng)){
+        if (s != "" && !s.contains("  ") && s.strip().equals(s) && isMatchingRegexp(s, eng)){
             String[]words = s.split(" ");
             for (int i = 0; i < words.length; i++) {
                 if (i != 0 && i != words.length - 1){
