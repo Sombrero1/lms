@@ -1,13 +1,20 @@
 package com.example.demo.controller;
 
+import com.example.demo.dao.RoleRepository;
 import com.example.demo.domain.Course;
+
+import com.example.demo.domain.User;
 import com.example.demo.dto.CourseDto;
-import com.example.demo.service.CourseService;
-import com.example.demo.service.LessonService;
+import com.example.demo.exception.AlreadySignedException;
+import com.example.demo.service.*;
 import com.example.demo.service.mappers.MapperCourseDtoService;
 import com.example.demo.service.mappers.MapperLessonDtoService;
-import com.example.demo.service.UserService;
+import com.example.demo.service.mappers.MapperUserDtoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,8 +22,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -25,21 +35,40 @@ import java.util.stream.Collectors;
 public class CourseController {
     private final CourseService courseService;
     private final MapperLessonDtoService mapperLessonDtoService;
-    private final UserService userService;
+    private final AssignCourseToUserService assignCourseToUserService;
     private final MapperCourseDtoService mapperCourseDtoService;
+    private final MapperUserDtoService mapperUserDtoService;
     private final LessonService lessonService;
 
-    public CourseController(CourseService courseService, MapperLessonDtoService mapperLessonDtoService, UserService userService, MapperCourseDtoService mapperCourseDtoService, LessonService lessonService) {
+    private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
+    private RoleRepository roleRepository;
+    private UserService userService;
+    private UserAuthService userAuthService;
+
+
+
+
+    public CourseController(CourseService courseService, MapperLessonDtoService mapperLessonDtoService, AssignCourseToUserService assignCourseToUserService, MapperCourseDtoService mapperCourseDtoService, MapperUserDtoService mapperUserDtoService, LessonService lessonService,
+                            RoleRepository roleRepository, UserService userService, UserAuthService userAuthService) {
         this.courseService = courseService;
         this.mapperLessonDtoService = mapperLessonDtoService;
-        this.userService = userService;
+        this.assignCourseToUserService = assignCourseToUserService;
         this.mapperCourseDtoService = mapperCourseDtoService;
+        this.mapperUserDtoService = mapperUserDtoService;
         this.lessonService = lessonService;
+        this.roleRepository = roleRepository;
+        this.userService = userService;
+        this.userAuthService = userAuthService;
     }
 
 
+
+
     @GetMapping()
-    public String courseTable(Model model, @RequestParam(value = "titlePrefix", required = false) String titlePrefix) {
+    public String courseTable(Model model, @RequestParam(value = "titlePrefix", required = false) String titlePrefix, Principal principal) {
+        if(principal != null){
+            logger.info("Request from user '{}'",principal.getName());
+        }
         model.addAttribute("courses",
                 courseService.
                         findByTitleWithPrefix(titlePrefix).
@@ -55,6 +84,7 @@ public class CourseController {
         model.addAttribute("users", course.getUsers());
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{id}")
     @Transactional
     public String courseForm(Model model, @PathVariable("id") Long id) {
@@ -64,6 +94,7 @@ public class CourseController {
         return "course_form";
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping
     @Transactional
     public String applyCourseForm(@Valid CourseDto courseDto, BindingResult bindingResult, Model model) {
@@ -78,36 +109,52 @@ public class CourseController {
         return "redirect:/course";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/new")
     public String courseForm(Model model) {
         model.addAttribute("courseDto", mapperCourseDtoService.convertToDTOCourse(courseService.createTemplateCourse()));
         return "course_form";
     }
+
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public String deleteCourse(@PathVariable("id") Long id) {
         courseService.delete(id);
         return "redirect:/course";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/assign")
-    public String assignCourse(Model model, @PathVariable("id") Long courseId) {
-        model.addAttribute("users", userService.findUsersNotAssignedToCourse(courseId));
+    public String assignCourse(Model model, @PathVariable("id") Long courseId, HttpServletRequest request) {
+        if(request.isUserInRole("ROLE_ADMIN")){
+            model.addAttribute("users", assignCourseToUserService.findUsersNotAssignedToCourse(courseId));
+        }
+        else{
+            User user = userService.findUserByUsername(request.getRemoteUser());
+            Course course = user.getCourses().stream().filter(x -> x.getId() == courseId).findAny().orElse(null);
+            if (course != null){
+                return "redirect:/course";
+            }
+            model.addAttribute("users", Collections.singletonList(user));
+        }
         model.addAttribute("courseId",courseId);
         return "assign_course";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/{courseId}/unassign")
     public String applyUnsignUserForm(@PathVariable("courseId") Long courseId,
                                  @RequestParam("userId") Long id) {
-        userService.unsignUser(courseId,id);
-        return String.format("redirect:/course/%d",courseId);
+        assignCourseToUserService.unsignUser(courseId,id);
+        return "redirect:/course";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/{courseId}/assign")
     public String applyAssignUserForm(@PathVariable("courseId") Long courseId,
                                  @RequestParam("userId") Long id) {
-        userService.signUser(courseId, id);
-        return String.format("redirect:/course/%d",courseId);
+        assignCourseToUserService.signUser(courseId, id);
+        return "redirect:/course";
     }
 
     @ExceptionHandler
@@ -117,4 +164,17 @@ public class CourseController {
         return modelAndView;
     }
 
+
+
+//
+//    @PostMapping
+//    public String submitUserForm(@Valid @ModelAttribute("user") UserDto user,
+//                                 BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            return "user_form";
+//        }
+//
+//        userService.save(user);
+//        return "redirect:/user";
+//    }
 }

@@ -44,6 +44,17 @@
 .close img{
     margin:auto;
 }
+.window_a{
+    margin-top:-30px;
+    margin-left: 100px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.window_a:hover{
+    color:rgb(155, 154, 154);
+    text-decoration: underline;
+}
 .title_form{
     text-align: center;
     margin:auto;
@@ -53,7 +64,7 @@
     line-height: 40px;
     margin-top:15px;
 }
-.name_user,.password, .file, .name_lesson, .name_course, .author{
+.name_user,.password, .file, .name_lesson, .name_course, .author, .roles{
     height:auto;
     margin:20px auto 10px auto;
     width:80%;
@@ -183,9 +194,9 @@ main p{
 .table button{
     float:left;
 }
-
-a {
-    text-decoration:none;}
+.multiple{
+    height:80px;
+}
 @media screen and (max-width:770px) and (min-width:320px){ 
     .container{width: 97vw; max-width:100%}
 }

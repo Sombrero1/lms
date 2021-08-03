@@ -1,40 +1,45 @@
-package com.example.demo.domain;
+package com.example.demo.dto;
 
-import lombok.Data;
+import com.example.demo.domain.Course;
+import com.example.demo.domain.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 import java.util.Set;
 
-@NoArgsConstructor
+
 @Getter
 @Setter
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@NoArgsConstructor
+public class UserDto {
+
     private Long id;
 
-    @Column
+    @NotBlank
     private String username;
 
-    @Column
+    @NotBlank
     private String password;
 
-    @ManyToMany(mappedBy = "users")
+
     private Set<Course> courses;
 
-    @ManyToMany()
     private Set<Role> roles;
 
-    public User(Long id, String username, String password, Set<Role> roles) {
+    public UserDto(Long id, String username, String password, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.roles = roles;
+    }
+
+    public UserDto(Long id, String username, Set<Role> roles) {
+        this.id = id;
+        this.username = username;
         this.roles = roles;
     }
 
@@ -42,15 +47,12 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
+        com.example.demo.domain.User user = (com.example.demo.domain.User) o;
+        return Objects.equals(id, user.getId());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
-
-
-
 }

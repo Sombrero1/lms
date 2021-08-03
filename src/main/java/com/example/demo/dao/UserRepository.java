@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.DoubleStream;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -17,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "left join u.courses c " +
             "where c.id = :courseId)")
     List<User> findUsersNotAssignedToCourse(@Param("courseId") long courseId);
+
+
+    Optional<User> findUserByUsername(String username);
 }

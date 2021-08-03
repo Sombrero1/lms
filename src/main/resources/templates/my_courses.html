@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,7 @@
   <link rel="stylesheet" media="screen and (max-width:576px) and (min-width:320px)" href="style.css">
 </head>
 <body>
-    <header class="header">
+    <header class="header" th:replace="fragments/fragment :: header">
         <div class="container">
             <div class="row">
                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">

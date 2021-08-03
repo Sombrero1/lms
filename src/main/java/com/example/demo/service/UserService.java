@@ -1,21 +1,62 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.Course;
+import com.example.demo.dao.UserRepository;
 import com.example.demo.domain.User;
+import com.example.demo.dto.UserDto;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-public interface UserService {
+@Service
+public class UserService {
 
-    User findById(Long id) throws NoSuchElementException;
+    private final UserRepository userRepository;
 
-    List<User> getUsers();
+    private final PasswordEncoder encoder;
 
-    void signUser(Long courseId, Long userId) throws NoSuchElementException;
+    @Lazy
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.encoder = passwordEncoder;
+    }
 
-    void unsignUser(Long courseId, Long userId) throws NoSuchElementException;
+    public List<UserDto> findAll() {
+        return userRepository.findAll().stream()
+                .map(usr -> new UserDto(usr.getId(), usr.getUsername(), "", usr.getRoles()))
+                .collect(Collectors.toList());
+    }
 
-    List<User>  findUsersNotAssignedToCourse(Long courseId);
+    public UserDto findById(long id) {
+        User usr = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return new UserDto(usr.getId(), usr.getUsername(), "", usr.getRoles());
+    }
 
+    public void deleteById(long id) {
+        userRepository.deleteById(id);
+    }
+
+    public void save(UserDto userDto) {
+        userRepository.save(new User(userDto.getId(),
+                userDto.getUsername(),
+                encoder.encode(userDto.getPassword()),
+                userDto.getRoles()
+        ));
+    }
+
+
+    @Transactional
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username).orElseThrow(NoSuchElementException::new);
+    }
 }
