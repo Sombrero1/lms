@@ -118,7 +118,7 @@ public class CourseController {
     @PreAuthorize(IS_PRINCIPAL)
     @GetMapping("/{id}/assign")
     public String assignCourse(Model model, @PathVariable("id") Long courseId, HttpServletRequest request) {
-        if(request.isUserInRole("ROLE_ADMIN")){
+        if(request.isUserInRole(ROLE_ADMIN)){
             model.addAttribute("users", assignCourseToUserService.findUsersNotAssignedToCourse(courseId));
         }
         else{
@@ -156,17 +156,4 @@ public class CourseController {
         return modelAndView;
     }
 
-
-
-//
-//    @PostMapping
-//    public String submitUserForm(@Valid @ModelAttribute("user") UserDto user,
-//                                 BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            return "user_form";
-//        }
-//
-//        userService.save(user);
-//        return "redirect:/user";
-//    }
 }

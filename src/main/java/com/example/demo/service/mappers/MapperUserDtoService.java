@@ -21,7 +21,7 @@ public class MapperUserDtoService {
         User user = modelMapper.map(userDto, User.class);
         return user;
     }
-    public UserDto convertToDTOUser(User user) {
+    public static UserDto convertToDTOUser(User user) {
         return new UserDto(user.getId(),user.getUsername(),user.getRoles());
     }
 
