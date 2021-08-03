@@ -28,6 +28,7 @@ public class UserDto {
 
     private Set<Course> courses;
 
+
     private Set<Role> roles;
 
     public UserDto(Long id, String username, String password, Set<Role> roles) {

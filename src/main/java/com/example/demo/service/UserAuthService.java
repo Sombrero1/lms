@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserAuthService implements UserDetailsService {
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_STUDENT = "ROLE_STUDENT";
+    public static final String IS_PRINCIPAL = "isAuthenticated()";
 
     private final UserRepository userRepository;
 

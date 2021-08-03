@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dao.CourseRepository;
 import com.example.demo.dao.RoleRepository;
 import com.example.demo.domain.Role;
 import com.example.demo.dto.UserDto;
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{user_id}")
-    public String deleteById(long id) {
+    public String deleteById(@PathVariable("user_id") long id) {
         userService.deleteById(id);
         return "redirect:/admin/users";
     }

@@ -5,7 +5,6 @@ import com.example.demo.domain.Course;
 
 import com.example.demo.domain.User;
 import com.example.demo.dto.CourseDto;
-import com.example.demo.exception.AlreadySignedException;
 import com.example.demo.service.*;
 import com.example.demo.service.mappers.MapperCourseDtoService;
 import com.example.demo.service.mappers.MapperLessonDtoService;
@@ -30,35 +29,31 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import static com.example.demo.service.UserAuthService.*;
+
 @Controller
 @RequestMapping("/course")
 public class CourseController {
     private final CourseService courseService;
-    private final MapperLessonDtoService mapperLessonDtoService;
     private final AssignCourseToUserService assignCourseToUserService;
     private final MapperCourseDtoService mapperCourseDtoService;
-    private final MapperUserDtoService mapperUserDtoService;
     private final LessonService lessonService;
 
     private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
-    private RoleRepository roleRepository;
     private UserService userService;
-    private UserAuthService userAuthService;
 
 
 
 
-    public CourseController(CourseService courseService, MapperLessonDtoService mapperLessonDtoService, AssignCourseToUserService assignCourseToUserService, MapperCourseDtoService mapperCourseDtoService, MapperUserDtoService mapperUserDtoService, LessonService lessonService,
-                            RoleRepository roleRepository, UserService userService, UserAuthService userAuthService) {
+
+    public CourseController(CourseService courseService, AssignCourseToUserService assignCourseToUserService,
+                            MapperCourseDtoService mapperCourseDtoService, LessonService lessonService,
+                             UserService userService) {
         this.courseService = courseService;
-        this.mapperLessonDtoService = mapperLessonDtoService;
         this.assignCourseToUserService = assignCourseToUserService;
         this.mapperCourseDtoService = mapperCourseDtoService;
-        this.mapperUserDtoService = mapperUserDtoService;
         this.lessonService = lessonService;
-        this.roleRepository = roleRepository;
         this.userService = userService;
-        this.userAuthService = userAuthService;
     }
 
 
@@ -84,7 +79,7 @@ public class CourseController {
         model.addAttribute("users", course.getUsers());
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured(ROLE_ADMIN)
     @GetMapping("/{id}")
     @Transactional
     public String courseForm(Model model, @PathVariable("id") Long id) {
@@ -94,7 +89,7 @@ public class CourseController {
         return "course_form";
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured(ROLE_ADMIN)
     @PostMapping
     @Transactional
     public String applyCourseForm(@Valid CourseDto courseDto, BindingResult bindingResult, Model model) {
@@ -109,21 +104,21 @@ public class CourseController {
         return "redirect:/course";
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured(ROLE_ADMIN)
     @GetMapping("/new")
     public String courseForm(Model model) {
         model.addAttribute("courseDto", mapperCourseDtoService.convertToDTOCourse(courseService.createTemplateCourse()));
         return "course_form";
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured(ROLE_ADMIN)
     @DeleteMapping("/{id}")
     public String deleteCourse(@PathVariable("id") Long id) {
         courseService.delete(id);
         return "redirect:/course";
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(IS_PRINCIPAL)
     @GetMapping("/{id}/assign")
     public String assignCourse(Model model, @PathVariable("id") Long courseId, HttpServletRequest request) {
         if(request.isUserInRole("ROLE_ADMIN")){
@@ -141,7 +136,7 @@ public class CourseController {
         return "assign_course";
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(IS_PRINCIPAL)
     @PostMapping("/{courseId}/unassign")
     public String applyUnsignUserForm(@PathVariable("courseId") Long courseId,
                                  @RequestParam("userId") Long id) {
@@ -149,7 +144,7 @@ public class CourseController {
         return "redirect:/course";
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(IS_PRINCIPAL)
     @PostMapping("/{courseId}/assign")
     public String applyAssignUserForm(@PathVariable("courseId") Long courseId,
                                  @RequestParam("userId") Long id) {

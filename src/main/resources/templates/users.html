@@ -70,7 +70,7 @@
                             <div class="card">
                                 <img th:src="@{/pictures/english.jpg}">
                                 <h3 class="course_title" th:text="${user.username}">Название курса</h3>
-                                <form sec:authorize="hasRole('ADMIN')" th:method="delete" th:action="@{/admin/users/{id}(id = ${user.id})}">
+                                <form sec:authorize="hasRole('ADMIN')" th:method="delete" th:action="@{/admin/users/{id} (id = ${user.id})}">
                                     <button type="submit" class="button fiolet">Удалить</button>
                                 </form>
                                 <form th:method="get" th:action="@{/admin/users/{id}(id = ${user.id})}" sec:authorize="hasRole('ADMIN')">

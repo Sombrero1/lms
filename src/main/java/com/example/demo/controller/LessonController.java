@@ -16,6 +16,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
+import static com.example.demo.service.UserAuthService.ROLE_ADMIN;
+
 @Controller
 @RequestMapping("/lesson")
 public class LessonController {
@@ -27,14 +29,14 @@ public class LessonController {
         this.mapperLessonDtoService = mapperLessonDtoService;
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured(ROLE_ADMIN)
     @GetMapping("/new")
     public String lessonForm(Model model, @RequestParam("course_id") long courseId) {
         model.addAttribute("lessonDto", lessonService.createTemplateLessonForCourse(courseId));
         return "lesson_form";
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured(ROLE_ADMIN)
     @GetMapping("/{id}")
     public String lessonForm(Model model, @PathVariable Long id) {
         LessonDto lessonDto = mapperLessonDtoService.convertToDTOLesson(lessonService.findById(id));
@@ -42,7 +44,7 @@ public class LessonController {
         return "lesson_form";
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured(ROLE_ADMIN)
     @DeleteMapping("/{id}")
     @Transactional
     public String deleteLesson(@PathVariable("id") Long id){
@@ -51,7 +53,7 @@ public class LessonController {
         return String.format("redirect:/course/%d",courseId);
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured(ROLE_ADMIN)
     @PostMapping
     public String applyLessonForm(@Valid LessonDto lessonDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return "lesson_form";

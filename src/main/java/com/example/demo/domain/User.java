@@ -1,6 +1,5 @@
 package com.example.demo.domain;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +26,8 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private Set<Course> courses;
+
+
 
     @ManyToMany()
     private Set<Role> roles;

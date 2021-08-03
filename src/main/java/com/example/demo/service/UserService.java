@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.dao.CourseRepository;
 import com.example.demo.dao.UserRepository;
+import com.example.demo.domain.Course;
 import com.example.demo.domain.User;
 import com.example.demo.dto.UserDto;
 import org.springframework.context.annotation.Lazy;
@@ -22,12 +24,14 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private CourseRepository courseRepository;
 
     private final PasswordEncoder encoder;
 
     @Lazy
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, CourseRepository courseRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.courseRepository = courseRepository;
         this.encoder = passwordEncoder;
     }
 
@@ -43,7 +47,15 @@ public class UserService {
     }
 
     public void deleteById(long id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        for (Course course:user.getCourses()
+             ) {
+            course.getUsers().remove(user);
+            user.getCourses().remove(course);
+            courseRepository.save(course);
+        }
+
+        userRepository.delete(user);
     }
 
     public void save(UserDto userDto) {
