@@ -40,10 +40,7 @@ public class CourseController {
     private final LessonService lessonService;
 
     private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
-    private UserService userService;
-
-
-
+    private final UserService userService;
 
 
     public CourseController(CourseService courseService, AssignCourseToUserService assignCourseToUserService,

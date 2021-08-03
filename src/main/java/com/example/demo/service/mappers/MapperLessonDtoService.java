@@ -8,10 +8,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MapperLessonDtoService {
-    @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
-    }
 
     @Autowired
     private ModelMapper modelMapper;
