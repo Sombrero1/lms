@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.domain.TitleCase;
 import com.example.demo.service.validators.TitleCaseValidator;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
 

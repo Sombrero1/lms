@@ -28,4 +28,9 @@ public class CourseDto {
     @TitleCase()
     private String title;
 
+    public CourseDto(Long id, String author, String title) {
+        this.id = id;
+        this.author = author;
+        this.title = title;
+    }
 }

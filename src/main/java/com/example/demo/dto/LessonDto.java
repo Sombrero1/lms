@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -27,5 +28,18 @@ public class LessonDto {
 
     public LessonDto(long courseId) {
         this.courseId = courseId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LessonDto lessonDto = (LessonDto) o;
+        return Objects.equals(id, lessonDto.id) && Objects.equals(title, lessonDto.title) && Objects.equals(text, lessonDto.text) && Objects.equals(courseId, lessonDto.courseId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, text, courseId);
     }
 }

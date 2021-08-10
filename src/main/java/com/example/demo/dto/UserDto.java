@@ -48,12 +48,12 @@ public class UserDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        com.example.demo.domain.User user = (com.example.demo.domain.User) o;
-        return Objects.equals(id, user.getId());
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(id, userDto.id) && Objects.equals(username, userDto.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, username, password, courses, roles);
     }
 }
