@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+
 public class SecurityConfiguration {
 
     public SecurityConfiguration(UserAuthService userAuthService) {
@@ -22,7 +23,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
@@ -50,7 +51,6 @@ public class SecurityConfiguration {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/**").permitAll()
                     .and()
                     .formLogin()

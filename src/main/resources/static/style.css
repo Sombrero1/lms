@@ -25,7 +25,7 @@ body{
     box-shadow: 0 0 16px rgba(65,5,90,0.32);
     margin-bottom:72px;
 }
-.home, .courses, .button{
+.home, .courses, .button, .profile{
     margin-top:17px;
 }
 .home button, .courses button{
@@ -33,7 +33,21 @@ body{
     background-color: transparent;
     cursor:pointer;
 }
-
+.profile img{
+    height:40px;
+    width:40px;
+    display: flex;
+    background-color: transparent;
+    /*background-image: url("/pictures/error1.jpg");*/
+    background-size: 120%;
+    border:none;
+    background-position: center;
+}
+.profile > img{
+    margin:auto;
+    height: 40px;
+    width:40px;
+}
 .button{
     height: 40px;
     width:auto;
@@ -90,9 +104,6 @@ body{
     background-repeat: no-repeat;
     background-position: center;
 }
-.plus_img{
-    margin:240px -10px 0px auto;
-}
 .section{
     background-color: #fff;
     display:flex;  
@@ -120,6 +131,11 @@ body{
     border:1px solid #f3f1f1;
     border-radius:20px;
     margin:20px 0px 0px 0px;
+}
+.user_img > input{
+    height:10px;
+    width:100%;
+    background: transparent;
 }
 .title{
     font-style: normal;
@@ -568,6 +584,24 @@ ul li:hover .submenu {
     cursor:pointer;
     background-image: url("pictures/settings.svg");
 }
+
+.file_upload{
+    position: relative;
+    overflow: hidden;
+    display:flex;
+    width:40px;
+    height:60px;
+    margin:240px 20px 0px -20px;
+}
+.file_upload input[type=file]{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: scale(20);
+    opacity: 0;
+    cursor: pointer
+}
+
 @media screen and (max-width:770px) and (min-width:320px){ 
     .container{width: 97vw; max-width:100%}
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -41,8 +41,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="roles">
-                        <div class=" label_input">Выбрать роль</div>
+                    <div class="roles" sec:authorize="hasRole('ADMIN')">
+                        <div class=" label_input" >Выбрать роль</div>
                         <select multiple class="multiple form_input" required th:field="*{roles}" >
                             <option th:each="role : ${roles}"
                                     th:text="${role.name}"

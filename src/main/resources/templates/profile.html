@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,7 +36,7 @@
         </div>
     </header>
     <main>
-        <div class="container">
+        <div class="container" th:object="${user}">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="row">
                     <h2 class="title" style="margin:125px auto 10px auto;">Профиль</h2>
@@ -46,15 +46,22 @@
                 <div class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
                     <div class="row">
                         <div class="user_img">
-                            <button class="button blue plus_img plus2"></button>
                         </div>
+                        <form th:method="post" th:action="@{/profile/avatar}" enctype="multipart/form-data">
+                            <div class="file_upload">
+                                <button class="button blue plus2"></button>
+                                <input name="avatar" type="file">
+                            </div>
                     </div>
+                    <div class="row">
+                        <button class="button fiolet">Обновить</button>
+                    </div></form>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-7 col-xs-7">
                     <div class="row">
                         <div class="name">
                             <div class="label">Имя пользователя</div>
-                            <div class="text"><p>Иванов Иван Иванович</p></div>
+                            <div class="text" th:text="*{username}"><p>Иванов Иван Иванович</p></div>
                         </div>
                     </div>
                     <div class="row">
@@ -65,7 +72,9 @@
                     </div>
                     <div class="row">
                         <div style="width: 100%;">
+                            <form th:action="@{/admin/users/{id}(id = *{id})}">
                             <button class="button fiolet" style="float:right">Редактировать</button>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -41,7 +41,7 @@ public class CourseControllerTest {
     @MockBean
     private AssignCourseToUserService assignCourseToUserServiceMock;
     
-   @MockBean
+    @MockBean
     private MapperCourseDtoService mapperCourseDtoService;
 
    private static final CourseDto courseDto = new CourseDto(1l,"title","author");

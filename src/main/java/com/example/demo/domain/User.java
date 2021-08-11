@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,9 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private Set<Course> courses;
 
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image avatarImage;
 
 
     @ManyToMany()
@@ -56,5 +60,13 @@ public class User {
         this.id = id;
         this.username = username;
         this.password = password;
+    }
+
+    public User(Long id, String username, String password,  Set<Role> roles, Image avatarImage) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.avatarImage = avatarImage;
+        this.roles = roles;
     }
 }

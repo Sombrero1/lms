@@ -24,14 +24,15 @@
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
         <div class="profile">
-          <form action="profile.html">
-            <button class="button fiolet">Профиль</button></form>
+          <a th:href="@{/profile}" sec:authorize="isAuthenticated()">
+             <img th:src="@{profile/avatar}"></a>
         </div>
       </div>
       <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
         <div class="exit_button">
           <form th:method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()">
-            <button></button></form>
+            <button></button>
+          </form>
         </div>
       </div>
     </div>

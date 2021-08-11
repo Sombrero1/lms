@@ -5,6 +5,7 @@ import com.example.demo.dao.UserRepository;
 import com.example.demo.domain.Course;
 import com.example.demo.domain.User;
 import com.example.demo.dto.UserDto;
+import com.example.demo.service.mappers.MapperUserDtoService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,11 +58,9 @@ public class UserService {
     }
 
     public void save(UserDto userDto) {
-        userRepository.save(new User(userDto.getId(),
-                userDto.getUsername(),
-                encoder.encode(userDto.getPassword()),
-                userDto.getRoles()
-        ));
+        Optional<User> userOld = userRepository.findUserByUsername(userDto.getUsername());
+        if(!userOld.isEmpty()) userDto.setAvatarImage(userOld.get().getAvatarImage());
+        userRepository.save(MapperUserDtoService.convertToEntityUser(userDto));
     }
 
 

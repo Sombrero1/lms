@@ -1,7 +1,9 @@
 package com.example.demo.dto;
 
 import com.example.demo.domain.Course;
+import com.example.demo.domain.Image;
 import com.example.demo.domain.Role;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
 
     private Long id;
@@ -43,6 +46,8 @@ public class UserDto {
         this.username = username;
         this.roles = roles;
     }
+    private Image avatarImage;
+
 
     @Override
     public boolean equals(Object o) {
