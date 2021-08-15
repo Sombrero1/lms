@@ -36,16 +36,7 @@
                             <small class="validation-error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"/>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="file">
-                            <div class="label_input">Обложка</div>
-                            <div class="file_upload form_input">
-                                <div>Файл не выбран</div>
-                                <button>Выбрать</button>
-                                <input type="file">
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="row">
                         <div class="info_block">
                             <div class="label_input">Информация</div>
@@ -58,6 +49,28 @@
                         </div>
                     </div>
                 </form>
+
+                <div class="row" th:unless="${courseDto.id == null}">
+                    <div class="file">
+                        <div class="label_input">Обложка</div>
+                        <!--                            <div class="file_upload form_input">-->
+                        <!--                                <div>Файл не выбран</div>-->
+                        <!--                                <button>Выбрать</button>-->
+                        <!--                                <input type="file">-->
+                        <!--                            </div>-->
+                        <form th:method="post" th:action="@{/course/avatar/{course_id} (course_id = ${courseDto.id})}" enctype="multipart/form-data">
+                            <div class="file_upload">
+                                <button class="button blue plus2"></button>
+                                <input name="avatar" type="file">
+                            </div>
+                            <div class="row">
+                                <button class="button fiolet">Обновить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
                 <div th:unless="${lessons == null}">
                     <div class="table_block">
                         <div class="label_input">Уроки</div>

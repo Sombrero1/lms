@@ -24,6 +24,7 @@
                <div class="col-lg-8 col-md-9 col-sm-9 col-xs-9">
                     <div class="courses">
                         <form action="courses.html">
+
                         <button><img th:src="@{/pictures/icons8-курсы-96 2.png}"></button></form>
                     </div>
                </div>
@@ -73,7 +74,7 @@
                     <div class="col-lg-4 col-md-6 col-xs-12" th:unless="${courses.empty}" th:each="course:${courses}">
                         <a th:href="@{/course/{id}(id=${course.id})}">
                             <div class="card">
-                                <img src="pictures/english.jpg">
+                                <img th:src="@{/course/avatar/{course_id} (course_id = ${course.id})}">
                                 <h3 class="course_title" th:text="${course.getTitle()}">Название курса</h3>
                                 <h4 class="course_author" th:text="${course.getAuthor()}">Автор</h4>
 

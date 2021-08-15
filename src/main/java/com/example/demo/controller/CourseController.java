@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dao.ImageRepository;
 import com.example.demo.dao.RoleRepository;
 import com.example.demo.domain.Course;
 
@@ -11,19 +12,25 @@ import com.example.demo.service.mappers.MapperLessonDtoService;
 import com.example.demo.service.mappers.MapperUserDtoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.NoSuchElementException;
@@ -43,14 +50,18 @@ public class CourseController {
     private final UserService userService;
 
 
+    private ImageStorageService imageStorageService;
+
+
     public CourseController(CourseService courseService, AssignCourseToUserService assignCourseToUserService,
                             MapperCourseDtoService mapperCourseDtoService, LessonService lessonService,
-                             UserService userService) {
+                            UserService userService, ImageStorageService imageStorageService) {
         this.courseService = courseService;
         this.assignCourseToUserService = assignCourseToUserService;
         this.mapperCourseDtoService = mapperCourseDtoService;
         this.lessonService = lessonService;
         this.userService = userService;
+        this.imageStorageService = imageStorageService;
     }
 
 
@@ -147,6 +158,33 @@ public class CourseController {
                                  @RequestParam("userId") Long id) {
         assignCourseToUserService.signUser(courseId, id);
         return "redirect:/course";
+    }
+
+
+
+    @PostMapping("/avatar/{course_id}")
+    @Secured(ROLE_ADMIN)
+    public String updateCourseImage(@PathVariable("course_id") Long courseId,
+                                    @RequestParam("avatar") MultipartFile avatar) throws IOException, IllegalAccessException {
+        logger.info("File name {}, file content type {}, file size {}", avatar.getOriginalFilename(), avatar.getContentType(), avatar.getSize());
+
+        imageStorageService.saveCourseImage(courseId, avatar.getContentType(), avatar.getInputStream());
+
+        return "redirect:/course/"+ courseId;
+    }
+
+    @GetMapping("/avatar/{course_id}")
+    @ResponseBody
+    @Secured(ROLE_ADMIN)
+    public ResponseEntity<byte[]> courseImage(@PathVariable("course_id") Long courseId) {
+        String contentType = imageStorageService.getContentTypeByCourseId(courseId)
+                .orElseThrow(NoSuchElementException::new);
+        byte[] data = imageStorageService.getCourseImageByCourseId(courseId)
+                .orElseThrow(NoSuchElementException::new);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(data);
     }
 
     @ExceptionHandler

@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.dao.CourseRepository;
 import com.example.demo.dao.ImageRepository;
 import com.example.demo.dao.UserRepository;
+import com.example.demo.domain.Course;
 import com.example.demo.domain.Image;
 import com.example.demo.domain.User;
 import org.slf4j.Logger;
@@ -30,9 +32,13 @@ public class ImageStorageService {
 
     private final UserRepository userRepository;
 
-    public ImageStorageService(ImageRepository imageRepository, UserRepository userRepository) {
+    private final CourseRepository courseRepository;
+
+    public ImageStorageService(ImageRepository imageRepository, UserRepository userRepository,
+                               CourseRepository courseRepository) {
         this.imageRepository = imageRepository;
         this.userRepository = userRepository;
+        this.courseRepository = courseRepository;
     }
 
     @Value("${file.storage.path}")
@@ -60,7 +66,30 @@ public class ImageStorageService {
             logger.error("Can't write to file {}",filename, ex);
             throw new IllegalAccessException(ex.toString());
         }
+    }
 
+    @Transactional
+    public void saveCourseImage(Long id, String contentType, InputStream is) throws IllegalAccessException {
+        Optional<Course> opt =  courseRepository.findById(id);
+        Course course = opt.orElseThrow(NoSuchElementException::new);
+        Image avatar =  course.getAvatarImage();
+        String filename;
+        if (avatar == null){
+            filename = UUID.randomUUID().toString();
+            avatar = new Image(null, contentType, filename);
+            course.setAvatarImage(avatar);
+        } else{
+            filename = avatar.getFilename();
+            avatar.setContentType(contentType);
+        }
+        imageRepository.save(avatar);
+        courseRepository.save(course);
+        try(OutputStream os = Files.newOutputStream(Path.of(path,filename),CREATE, WRITE, TRUNCATE_EXISTING)){
+            is.transferTo(os);
+        } catch (Exception ex){
+            logger.error("Can't write to file {}",filename, ex);
+            throw new IllegalAccessException(ex.toString());
+        }
     }
 
     public Optional<String> getContentTypeByUser(String username) {
@@ -72,6 +101,24 @@ public class ImageStorageService {
     public Optional<byte[]> getAvatarImageByUser(String username) {
         return userRepository.findUserByUsername(username)
                 .map(User::getAvatarImage)
+                .map(Image::getFilename)
+                .map(filename -> {
+                    try {
+                        return Files.readAllBytes(Path.of(path, filename));
+                    } catch (IOException ex) {
+                        logger.error("Can't read file {}", filename, ex);
+                        throw new IllegalStateException(ex);
+                    }
+                });
+    }
+
+    public Optional<String> getContentTypeByCourseId(Long courseId) {
+        return courseRepository.findById(courseId).map(Course::getAvatarImage).map(Image::getContentType);
+    }
+
+    public Optional<byte[]> getCourseImageByCourseId(Long courseId) {
+        return courseRepository.findById(courseId)
+                .map(Course::getAvatarImage)
                 .map(Image::getFilename)
                 .map(filename -> {
                     try {

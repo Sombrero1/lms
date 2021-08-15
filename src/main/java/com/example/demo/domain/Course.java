@@ -38,6 +38,10 @@ public class Course {
     @ManyToMany
     private Set<User> users;
 
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image avatarImage;
+
 
     public Course(Long id, String author, String title) {
         this.id = id;
