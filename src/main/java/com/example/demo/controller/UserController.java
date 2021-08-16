@@ -68,7 +68,7 @@ public class UserController {
             userService.save(userDto);
             return "redirect:/profile";
         }
-        if(authentication.getAuthorities().contains("ROLE_ADMIN")){
+        if(authentication.getAuthorities().contains(ROLE_ADMIN)){
             userService.save(userDto);
             return "redirect:/admin/users";
         }
