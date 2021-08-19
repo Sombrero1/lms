@@ -56,7 +56,7 @@ public class UserServiceTest{
 
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        MapperUserDtoService.setPasswordEncoder(passwordEncoder);
+        MapperUserDtoService mapperUserDtoService = new MapperUserDtoService(passwordEncoder);
 
 
 
@@ -72,14 +72,14 @@ public class UserServiceTest{
 
         Mockito.when(userRepositoryMock.findById(anyLong())).thenReturn(Optional.empty());
         Mockito.when(userRepositoryMock.findById(1l)).thenReturn(
-                Optional.of(MapperUserDtoService.convertToEntityUser(user1)));
+                Optional.of(mapperUserDtoService.convertToEntityUser(user1)));
         Mockito.when(userRepositoryMock.findById(2l)).thenReturn(
-                Optional.of(MapperUserDtoService.convertToEntityUser(user2)));
+                Optional.of(mapperUserDtoService.convertToEntityUser(user2)));
 
 
 
 
-        userService = new UserService(userRepositoryMock, courseRepositoryMock, passwordEncoder);
+        userService = new UserService(userRepositoryMock, courseRepositoryMock, passwordEncoder, mapperUserDtoService);
     }
 
     @Test

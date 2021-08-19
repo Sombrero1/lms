@@ -23,15 +23,19 @@ import static com.example.demo.service.mappers.MapperUserDtoService.convertToDTO
 public class UserService {
 
     private final UserRepository userRepository;
+    private final MapperUserDtoService mapperUserDtoService;
     private CourseRepository courseRepository;
 
     private final PasswordEncoder encoder;
 
+
+
     @Lazy
-    public UserService(UserRepository userRepository, CourseRepository courseRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, CourseRepository courseRepository, PasswordEncoder passwordEncoder, MapperUserDtoService mapperUserDtoService) {
         this.userRepository = userRepository;
         this.courseRepository = courseRepository;
         this.encoder = passwordEncoder;
+        this.mapperUserDtoService = mapperUserDtoService;
     }
 
     public List<UserDto> findAll() {
@@ -60,7 +64,7 @@ public class UserService {
     public void save(UserDto userDto) {
         Optional<User> userOld = userRepository.findUserByUsername(userDto.getUsername());
         if(!userOld.isEmpty()) userDto.setAvatarImage(userOld.get().getAvatarImage());
-        userRepository.save(MapperUserDtoService.convertToEntityUser(userDto));
+        userRepository.save(mapperUserDtoService.convertToEntityUser(userDto));
     }
 
 
