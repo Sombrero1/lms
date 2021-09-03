@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<header class="header" th:fragment="header">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <div class="home">
-          <form th:action="@{/course}">
-            <button><img th:src="@{/pictures/Vector.png}"></button></form>
+<body>
+  <header class="header" th:fragment="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+          <div class="home">
+            <a href="my_courses.html"><button><img src="static/pictures/Vector.png"></button></a>
+          </div>
         </div>
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+          <div sec:authorize="hasRole('ADMIN')" class="users">
+            <form th:action="@{/admin/users}"><button></button></form>
+          </div>
+        </div>
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+          <div class="courses">
+            <a href="courses.html"><button><img src="static/pictures/icons8-курсы-96 2.png"></button></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+          <div class="profile">
+            <a href="profile.html"><button></button></a>
+          </div>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+          <div class="exit_button">
+            <a><!--th:method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()"-->
+              <button  sec:authentication="principal.username"></button>
+            </a>
+          </div>
+        </div>
+        <!--<div class="col-lg-1 col-md-col-sm-1 col-xs-1">
+          <div class="login_button">
+              <a href=""><button></button></a>
+          </div> --> <!--это кнопка входа, важно что она не может существовать одновременно с выходом, вся сетка слетит-->
       </div>
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <div sec:authorize="hasRole('ADMIN')" class="users">
-          <form th:action="@{/admin/users}">
-            <button></button>
-          </form>
-        </div>
-      </div>
-      <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-        <div class="courses">
-          <form th:action="@{/course}">
-            <button><img th:src="@{/pictures/icons8-курсы-96 2.png}"></button></form>
-        </div>
-      </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-        <div class="profile">
-          <a th:href="@{/profile}" sec:authorize="isAuthenticated()">
-             <img th:src="@{profile/avatar}"></a>
-        </div>
-      </div>
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <div class="exit_button">
-          <form th:method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()">
-            <button></button>
-          </form>
-        </div>
       </div>
     </div>
-  </div>
-</header>
-
+  </header>
 </body>
 </html>

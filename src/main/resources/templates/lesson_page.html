@@ -7,7 +7,6 @@
   <title>Lesson_page</title>
   <link rel="stylesheet" href="https://unpkg.com/flexboxgrid2@7.2.1/flexboxgrid2.min.css">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="style_window.css">
   <link rel="stylesheet" media="screen and (max-width:576px) and (min-width:320px)" href="style.css">
 </head>
 <body>
@@ -16,21 +15,33 @@
             <div class="row">
                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
                     <div class="home">
-                        <form action="my_courses.html">
-                        <button><img  src="pictures/Vector.png"></button></form>
+                        <a href="my_courses.html">
+                        <button><img  src="static/pictures/Vector.png"></button></a>
                     </div> 
                </div>
                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">     
                     <div class="content_course">
                         <ul class="topmenu">
-                            <li><a href="#"><img src="pictures/содержание 1.svg"><div>Содержание</div></a>
+                            <li><a href="#"><img src="static/pictures/содержание 1.svg"><div>Содержание</div></a>
                                 <ul class="submenu">
-                                    <li><a href="">Курс о чем то</a></li>
-                                    <li><a href="">1.Урок</a></li>
-                                    <li><a href="">2.Урок</a></li>
-                                    <li><a href="">3.Урок</a></li>
-                                    <li><a href="">4.Урок</a></li>
-                                    <li><a href="">5.Урок</a></li>
+                                    <li>Введение в JavaScript
+                                        <ul>
+                                            <li><a>История языка</a></li>
+                                            <li><a>Внедрение языка, структура программ</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>Стандартные объекты JavaScript
+                                        <ul>
+                                            <li><a>Функции</a></li>
+                                            <li><a>Объекты</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>Работа с HTML
+                                        <ul>
+                                            <li><a>DOM-дерево</a></li>
+                                            <li><a>JQuery</a></li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -38,8 +49,7 @@
                </div>
                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                     <div class="profile">
-                        <form action="profile.html">
-                        <button class="button fiolet">Профиль</button></form>
+                        <a href="profile.html"><button></button></a>
                     </div> 
                 </div>
             </div>
@@ -134,16 +144,21 @@
     <footer class="footer_light">
         <div class="container">
             <div class="row">
-                <div class="col-lg-10">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                     <div class="comment">
-                        <button class="button blue">Комментарий</button>
+                        <a href="#"><button class="button blue">Комментарий</button></a>
                     </div>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                    <div class="ready">
+                        <a href="#"><button class="button fiolet">Урок пройден</button></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                     <div class="arrows">
                         <div class="row">
-                            <button class="fiolet"><img src="pictures/стрелка влево.png"></button>
-                            <button class="fiolet"><img src="pictures/стрелка вправо.png"></button>
+                            <a href="#"><button class="fiolet"><img src="static/pictures/стрелка влево.png"></button></a>
+                            <a href="#"><button class="fiolet"><img src="static/pictures/стрелка вправо.png"></button></a>
                         </div>
                     </div>
                 </div>

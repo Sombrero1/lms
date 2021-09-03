@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <title>Course_page</title>
   <link rel="stylesheet" href="https://unpkg.com/flexboxgrid2@7.2.1/flexboxgrid2.min.css">
   <link rel="stylesheet" href="style.css">
@@ -15,20 +14,17 @@
             <div class="row">
                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
                     <div class="home">
-                        <form action="my_courses.html">
-                        <button><img  src="pictures/Vector.png"></button></form>
+                        <a href="my_courses.html"><button><img src="static/pictures/Vector.png"></button></a>
                     </div> 
                </div>
                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">     
                     <div class="courses">
-                        <form action="courses.html">
-                        <button><img src="pictures/icons8-курсы-96 2.png"></button></form>
+                        <a href="courses.html"><button><img src="static/pictures/icons8-курсы-96 2.png"></button></a>
                     </div>
                </div>
                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                     <div class="profile">
-                        <form action="profile.html">
-                        <button class="button fiolet">Профиль</button></form>
+                        <a href="profile.html"><button></button></a>
                     </div> 
                 </div>
             </div>
@@ -48,75 +44,77 @@
                 <div class="row">
                     <div class="info">
                         <div class="label">Информация</div>
-                        <div class="text"><p>В курсе рассматриваются двумерные массивы, кортежи, множества, словари и многое другое. Используется версия языка Python ветки 3.x.
-
-                            Курс разбит на 11 модулей с теоретическими и практическими материалами, а также заданиями.(сотри потом, прост тест)</p></div>
+                        <div class="text"><p>В курсе рассматриваются массивы, функции, объекты и многое другое в языке JS. Используется новейшая версия языка.
+                                             Курс разбит на 3 модуля с теоретическими и практическими материалами, а также заданиями.(сотри потом, прост тест)</p></div>
                     </div>
                 </div>
                 <div class="row">
                     <div style="width: 99%;">
-                        <button class="button fiolet" style="float:right">Редактировать</button>
+                        <a href="course_form.html"><button class="button fiolet" style="float:right">Редактировать</button></a>
                     </div>
                 </div>
-                <div class="table_block">
+                <div class="row">
                     <div class="label">Содержание</div>
-                        <div class="row" th:unless="${lessons == null}">
-                            <table class="table">
-                                <tr class="table_title">
-                                    <th>Id</th>
-                                    <th>Название</th>
-                                    <th>Action</th>
-                                </tr>
-                                <tr class="table_body" th:each="lesson:${lessons}">
-                                    <td th:value="lesson.id"></td>
-                                    <td th:value="lesson.title">Верстка</td>
-                                    <td>
-                                        <button class="button fiolet">Открыть</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    <tr th:if="${lessons == null}">
-                        <td>No data</td>
-                    </tr>
+                    <div class="course_tree">
+                        <ul class="treeline">
+                            <li>Введение в JavaScript
+                                <ul>
+                                    <li>История языка</li>
+                                    <li>Внедрение языка, структура программ, комментарии</li>
+                                </ul>
+                            </li>
+                            <li>Стандартные объекты JavaScript
+                                <ul>
+                                    <li>Функции</li>
+                                    <li>Объекты</li>
+                                </ul>
+                            </li>
+                            <li>Работа с HTML
+                                <ul>
+                                    <li>DOM-дерево</li>
+                                    <li>JQuery</li>
+                                </ul>
+                            </li>
+                         </ul>
+                    </div>
                 </div>
                 <div class="row">
                     <div style="width: 100%;">
-                        <button class="button blue plus2" style="float:right"></button>
+                        <a href="info_module.html"><button class="button blue plus2" style="float:right"></button></a>
                     </div>
                 </div>
                 <div class="table_block">
                     <div class="label">Пользователи</div>
-                        <div class="row">
-                            <table class="table">
-                                <tr class="table_title">
-                                    <th>Id</th>
-                                    <th>Название</th>
-                                    <th>Action</th>
-                                </tr>
-                                <tr class="table_body">
-                                    <td>1</td>
-                                    <td>Бахтин Антон</td>
-                                    <td>
-                                        <button class="button fiolet">Открыть</button>
-                                    </td>
-                                </tr>
-                                <tr class="table_body">
-                                    <td>2</td>
-                                    <td>Башилова Наталья</td>
-                                    <td>
-                                        <button class="button fiolet">Открыть</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>No data</td>
-                                </tr>
-                            </table>
-                        </div>
+                    <div class="row">
+                        <table class="table">
+                            <tr class="table_title">
+                                <th>Id</th>
+                                <th>Название</th>
+                                <th>Action</th>
+                            </tr>
+                            <tr class="table_body">
+                                <td>1</td>
+                                <td>Бахтин Антон</td>
+                                <td>
+                                    <a href="#"><button class="button fiolet">Открыть</button></a>
+                                </td>
+                            </tr>
+                            <tr class="table_body">
+                                <td>2</td>
+                                <td>Башилова Наталья</td>
+                                <td>
+                                    <a href="#"><button class="button fiolet">Открыть</button></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>No data</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
                 <div class="row">
                     <div style="width: 100%;">
-                        <button class="button blue plus2" style="float:right"></button>
+                        <a href="assign_course.html"><button class="button blue plus2" style="float:right"></button></a>
                     </div>
                 </div>
             </div>
