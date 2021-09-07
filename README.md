@@ -1,12 +1,36 @@
+# Описание
+LMS - learning management system, дословно переводится как Система Управления Обучением. Позволяет создавать онлайн-курсы, управлять ими и обучать людей, предоставляя пользователям доступ к материалам и т.д.
+![главная страница](https://i.ibb.co/GTX332x/main.png)
+![страница новостей](https://i.ibb.co/Qp70SJG/news.png)
+
+# В рамках проекта были реализованы следующие сценарии:
+- процесс аутентификации;
+- создание курса, модулей, уроков;
+- страница новостей с тэгами;
+- запись на курс пользователей;
+- просмотр курса, его прохождение
+- админ-панель с возможностью управления юзерами, курсами;
+- профиль пользователя с возможность установки аватара;
+- система ролей (ученик, преподаватель, админ).
+
+# Связка экранов на этапе проектирования:
+![схема](https://i.ibb.co/TBJrGzT/link-screen.png)
+
 # БД:
 ![схема](db.jpg) \n
-Основные запросы:
-1. Авторизация: SELECT password FROM users WHERE user_id = ?
-2. Все курсы: SELECT * FROM courses ORDER BY rating DESC. Индекс на таблицу: CREATE INDEX idx_courses_title ON courses USING btree title; CREATE INDEX idx_courses_rating ON courses USING btree rating, CREATE INDEX idx_courses_category ON courses USING btree category
-3. Курсы пользователя: SELECT * FROM coures WHERE course_id IN ( SELECT course_id FROM users_courses WHERE user_id = ?) 
-4. Модули курса: SELECT * FROM modules WHERE course_id = ? Индекс: CREATE INDEX idx_modules ON modules USING btree name; CREATE INDEX idx_modules ON modules USING btree author_create; CREATE INDEX idx_modules ON modules USING btree name. Возможно стоит сделать и на course_id (т.к. курсов не так много, как модулей по отношению к топикам)
-5. Топики модуля: SELECT * FROM topics WHERE module_id = ? Индексы на таблицу topics аналогичные как для предыдущей
-6. Добавление курса пользователем к себе: INSERT INTO users_courses VALUES(?, ?)
-7. Создание топика: INSERT INTO topics VALUES(?,...,?)
+
+# Используемые технологии:
+- Java;
+- Spring Boot;
+- Spring security;
+- PostgreSQL;
+- Docker;
+- Hibernate;
+- Thymeleaf;
+- html.
+
+# Запуск:
+Собрать .jar через <code>mvn build</code>. Запустить .jar через <code>java -jar name_project.jar</code>
+
 
 
